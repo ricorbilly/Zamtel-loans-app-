@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zamtel Loans</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark">Z</div>
+          <span>Zamtel Loans</span>
+        </div>
+        <button class="secondary-button">Support</button>
+      </header>
+
+      <main class="app-layout">
+        <section class="hero-panel">
+          <p class="eyebrow">Fast cash for everyday life</p>
+          <h1>Get a loan that works for your plans.</h1>
+          <p class="hero-copy">
+            Flexible repayment options designed for Zambians who need quick access to funds.
+          </p>
+
+          <div class="loan-card">
+            <div class="loan-header">
+              <span>Preferred loan amount</span>
+              <strong id="loanValue">ZMW 8,000</strong>
+            </div>
+
+            <input id="loanRange" type="range" min="500" max="50000" step="500" value="8000" />
+
+            <div class="range-labels">
+              <span>ZMW 500</span>
+              <span>ZMW 50,000</span>
+            </div>
+
+            <div class="summary-grid">
+              <div>
+                <label>Monthly estimate</label>
+                <strong id="monthlyValue">ZMW 1,850</strong>
+              </div>
+              <div>
+                <label>Tenure</label>
+                <strong>12 months</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow dark">Apply now</p>
+              <h2>Complete your application</h2>
+            </div>
+            <span class="status-pill">Secure</span>
+          </div>
+
+          <form id="loanForm" novalidate>
+            <div class="field-row two-up">
+              <label>
+                <span>First name</span>
+                <input type="text" id="firstName" placeholder="Enter first name" required />
+              </label>
+              <label>
+                <span>Last name</span>
+                <input type="text" id="lastName" placeholder="Enter last name" required />
+              </label>
+            </div>
+
+            <label>
+              <span>Email address</span>
+              <input type="email" id="email" placeholder="name@example.com" required />
+            </label>
+
+            <label>
+              <span>Phone number</span>
+              <div class="input-with-button">
+                <input type="tel" id="phone" placeholder="+260 97 123 4567" required />
+                <button type="button" id="sendOtp" class="ghost-button">Send OTP</button>
+              </div>
+            </label>
+
+            <label>
+              <span>OTP code</span>
+              <input type="text" id="otp" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit OTP" required />
+            </label>
+
+            <div class="field-row two-up">
+              <label>
+                <span>Create PIN</span>
+                <input type="password" id="pin" inputmode="numeric" maxlength="4" placeholder="4-digit PIN" required />
+              </label>
+              <label>
+                <span>Confirm PIN</span>
+                <input type="password" id="confirmPin" inputmode="numeric" maxlength="4" placeholder="Re-enter PIN" required />
+              </label>
+            </div>
+
+            <div class="checkbox-row">
+              <input type="checkbox" id="terms" required />
+              <label for="terms">I agree to the loan terms and privacy policy.</label>
+            </div>
+
+            <button type="submit" class="primary-button">Submit application</button>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

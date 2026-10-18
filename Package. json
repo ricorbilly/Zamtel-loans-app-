@@ -1,3 +1,4 @@
+"scripts": { "start": "node server.js" }
 {
   "name": "zamtel-loans-app",
   "version": "1.0.0",
